@@ -128,14 +128,22 @@ store_id,uptime_last_hour,downtime_last_hour,uptime_last_day,downtime_last_day,u
 
 - If timezone missing → default "America/Chicago".
 - If business hours missing → assume 24×7 open.
-- Uptime/downtime is interpolated between polls (if last status is "active", assume continuous until next poll).
 
 
 ### Improvements (Future Scope)
 
-- Replace in-memory report tracking with Redis/DB-based job queue (for distributed systems).
-- Use Celery / RQ for scalable background job processing.
-- Optimize interpolation using vectorized pandas/numpy operations.
-- Add authentication (JWT) for API endpoints.
-- Add Dockerfile for containerized deployment.
-- Switch SQLite → PostgreSQL for production workloads.
+- 1. **Database Indexing**
+   - Add indexes on `store_status.store_id` and `store_status.timestamp_utc`  
+   - This speeds up filtering by store and by time range.
+
+- 2. **Pre-aggregation in SQL**
+   - Instead of pulling raw logs into Python, use SQL queries with `GROUP BY` to aggregate uptime/downtime buckets directly in the DB.
+   - Example: compute total active minutes per store per day in SQL, then adjust only for business hours in Python.
+
+- 3. **Caching**
+   - Load all business hours and timezones into memory once, instead of querying for each store repeatedly.
+
+- 4. **Parallelization**
+   - Split stores into batches and process in parallel using Python multiprocessing / joblib.
+
+- 5. Switch SQLite → PostgreSQL for production workloads, Optimize interpolation using vectorized pandas/numpy operations, Use Celery / RQ for scalable background job processing.

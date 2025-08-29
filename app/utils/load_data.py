@@ -20,7 +20,7 @@ def load_store_status(file_path: str, db: Session):
         )
         db.add(record)
     db.commit()
-    print("✅ Store status data loaded.")
+    print("Store status data loaded.")
 
 def load_business_hours(file_path: str, db: Session):
     df = pd.read_csv(file_path)
@@ -34,7 +34,7 @@ def load_business_hours(file_path: str, db: Session):
         )
         db.add(record)
     db.commit()
-    print("✅ Business hours data loaded.")
+    print("Business hours data loaded.")
 
 def load_store_timezone(file_path: str, db: Session):
     df = pd.read_csv(file_path)
@@ -46,7 +46,7 @@ def load_store_timezone(file_path: str, db: Session):
         )
         db.add(record)
     db.commit()
-    print("✅ Store timezone data loaded.")
+    print("Store timezone data loaded.")
 
 def run_ingestion():
     db = SessionLocal()

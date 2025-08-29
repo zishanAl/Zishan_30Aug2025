@@ -12,4 +12,4 @@ app.include_router(report_api.router)
 
 @app.get("/")
 def read_root():
-    return {"message": "Store Monitoring API is running 🚀"}
+    return {"message": "Store Monitoring API is running "}
